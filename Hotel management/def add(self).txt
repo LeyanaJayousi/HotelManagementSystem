@@ -1,0 +1,24 @@
+def add(self):
+        con=sqlite3.connect(database= r'htldb')
+        cur=con.cursor()
+        try:
+            if self.var_isthtl_id.get()=="":
+                messagebox.showerror("Error", "Hotel ID must be required", parent=self.root)            
+            else:
+                cur.execute("Select * from hotel where htlid=?", (self.var_isthtl_id.get(), ))
+                row=cur.fetchone()
+                if row!=None:
+                    messagebox.showerror("Error ", "This hotel is already assigned", parent=self.root)
+                else:
+                    cur.execute("INSERT INTO hotel_information (htlid, name, area, category, website, board) VALUES (?,?,?,?,?,?)", (
+                        self.var_isthtl.get()
+                        self.var_name.get()
+                        self.var_area.get()
+                        self.var_Category.get()
+                        self.var_board.get()
+                        self.var_Website.get()
+                    ))
+                    con.commit()
+                    messagebox.showinfo("Success", "Hotel added successfully", parent=self.root)
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self.root) 
